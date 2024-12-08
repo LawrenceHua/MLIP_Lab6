@@ -37,5 +37,19 @@ def feature_target_sample(housing_data_sample):
 
 def test_data_split(feature_target_sample):
     return_tuple = data_split(*feature_target_sample)
-    # TODO test if the length of return_tuple is 4
-    raise NotImplemented
+    
+    # Test if the length of return_tuple is 4
+    assert len(return_tuple) == 4, "The returned tuple must have four elements."
+    
+    # Test if the first two elements are DataFrames (X_train, X_test)
+    assert isinstance(return_tuple[0], pd.DataFrame), "X_train should be a DataFrame."
+    assert isinstance(return_tuple[1], pd.DataFrame), "X_test should be a DataFrame."
+    
+    # Test if the last two elements are Series (y_train, y_test)
+    assert isinstance(return_tuple[2], pd.Series), "y_train should be a Series."
+    assert isinstance(return_tuple[3], pd.Series), "y_test should be a Series."
+    
+    # Test if the data is split into train and test sets
+    total_rows = feature_target_sample[0].shape[0]
+    train_test_rows = return_tuple[0].shape[0] + return_tuple[1].shape[0]
+    assert total_rows == train_test_rows, "The total number of rows in the dataset should match the sum of training and testing rows."
